@@ -5,8 +5,8 @@
 -- the location of this file, i.e. you can safely use paths relative
 -- to the location of this file.
 
-WORKFLOW_JOB_DIRECTORY ../share/workflows/jobs/internal/config
-WORKFLOW_JOB_DIRECTORY ../share/workflows/jobs/internal-gui/config
+WORKFLOW_JOB_DIRECTORY ../workflows/jobs/internal/config
+WORKFLOW_JOB_DIRECTORY ../workflows/jobs/internal-gui/config
 QUEUE_OPTION LOCAL MAX_RUNNING 1
 
 
@@ -45,7 +45,7 @@ MAX_SUBMIT          4
 
 -- The script used to run through the jobs in the forward model - a
 -- very important script.
-JOB_SCRIPT          ../bin/job_dispatch.py
+JOB_SCRIPT          ../../bin/job_dispatch.py
 
 
 -- Installing a couple of jobs. A site will typically have a much
@@ -55,12 +55,12 @@ JOB_SCRIPT          ../bin/job_dispatch.py
 -- file with more details on how to run this job. Each of these files
 -- are used to populate on instance of ext_job_type which is
 -- implemented in libjob_queue/src/ext_job.c.
-INSTALL_JOB         RUN_RMS_20XX                config/jobs/RUN_RMS_20XX
-INSTALL_JOB         ECLIPSE                     config/jobs/ECLIPSE    
-INSTALL_JOB         ECLIPSE100_2009.2           config/jobs/ECLIPSE100_2009.2
-INSTALL_JOB         ECLIPSE100_2009.2_NOTARGET  config/jobs/ECLIPSE100_2009.2_NOTARGET
-INSTALL_JOB         ECLIPSE100_2010.2           config/jobs/ECLIPSE100_2010.2
-INSTALL_JOB         ECLIPSE100_2016.1           config/jobs/ECLIPSE100_2016.1
+INSTALL_JOB         RUN_RMS_20XX                ../config/jobs/RUN_RMS_20XX
+INSTALL_JOB         ECLIPSE                     ../config/jobs/ECLIPSE    
+INSTALL_JOB         ECLIPSE100_2009.2           ../config/jobs/ECLIPSE100_2009.2
+INSTALL_JOB         ECLIPSE100_2009.2_NOTARGET  ../config/jobs/ECLIPSE100_2009.2_NOTARGET
+INSTALL_JOB         ECLIPSE100_2010.2           ../config/jobs/ECLIPSE100_2010.2
+INSTALL_JOB         ECLIPSE100_2016.1           ../config/jobs/ECLIPSE100_2016.1
 
 
 

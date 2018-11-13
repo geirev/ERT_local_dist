@@ -61,14 +61,11 @@ fi
 #option( INSTALL_ERT_LEGACY  "Add ert legacy wrappers"                                 OFF)
 if [[ $libecl_inst -eq 1 ]]
 then
-   if [ -r libecl ]
-   then
-      rm -rf libecl
-   fi
-   git clone https://github.com/Statoil/libecl
+   mkdir -p libecl
    pushd libecl
-   sudo pip install -r requirements.txt
-   mkdir build
+#   git clone https://github.com/Statoil/libecl
+#   sudo pip install -r requirements.txt
+   mkdir -p build
    cd build
    cmake .. -DENABLE_PYTHON=ON \
             -DCMAKE_INSTALL_PREFIX=$INSTALL \
@@ -101,17 +98,15 @@ fi
 
 if [[ $libres_inst -eq 1 ]]
 then
-   if [ -r libres ]
-   then
-      rm -rf libres
-   fi
-   git clone https://github.com/Statoil/libres
+   mkdir -p libres
    pushd libres
-   sudo pip install -r requirements.txt
-   mkdir build
+#   git clone https://github.com/Statoil/libres
+#   sudo pip install -r requirements.txt
+   mkdir -p build
    cd build
    cmake .. -DENABLE_PYTHON=ON \
             -DCMAKE_INSTALL_PREFIX=$INSTALL \
+            -DCMAKE_PREFIX_PATH=$INSTALL \
             -DCMAKE_MODULE_PATH=$INSTALL/share/cmake/Modules\
             -DBUILD_TESTS=ON\
             -DINSTALL_ERT_LEGACY=ON
@@ -123,19 +118,28 @@ fi
 
 if [[ $ert_inst -eq 1 ]]
 then
-   if [ -r ert ]
-   then
-      rm -rf ert
-   fi
+#   if [ -r ert ]
+#   then
+#      pushd libres
+#      git checkout master
+#      git remote -v
+#      git fetch upstream
+#      git merge upstream/master
+#      git push origin
+#      popd
+#   else
+#      git clone https://github.com/geirev/ert
+#   fi
 #   sudo apt-get install python-qt4
-   git clone https://github.com/Statoil/ert
-
+#
    pushd ert
-   sudo pip install -r requirements.txt
-   mkdir build
+#   sudo pip install -r requirements.txt
+#   mkdir build
    cd build
    cmake .. -DCMAKE_INSTALL_PREFIX=$INSTALL \
+            -DCMAKE_PREFIX_PATH=$INSTALL \
             -DBUILD_TESTS=ON\
+            -DRST_DOC=ON\
             -DCMAKE_MODULE_PATH=$INSTALL/share/cmake/Modules
    make
    sudo make install
@@ -144,17 +148,24 @@ fi
 
 if [[ $site_inst -eq 1 ]]
 then
-   sudo cp ERTshared/site-config $INSTALL/share
-   sudo cp ERTshared/site-config $INSTALL/lib/python2.7/dist-packages/res/fm/ecl
-   sudo mkdir $INSTALL/share/bin
-   sudo cp ERTshared/bin/* $INSTALL/share/bin
-   sudo mkdir $INSTALL/share/config/jobs
-   sudo cp ERTshared/config/jobs/* $INSTALL/share/config/jobs
+  
+   sudo mkdir -p $INSTALL/share/ert
+   sudo cp ERT_local_files/site-config $INSTALL/share/ert
+   sudo cp ERT_local_files/ecl_config.yml $INSTALL/lib/python2.7/dist-packages/res/fm/ecl
+   sudo mkdir -p $INSTALL/share/bin
+   sudo cp ERT_local_files/bin/* $INSTALL/share/bin
+   sudo mkdir -p $INSTALL/share/config
+   sudo mkdir -p $INSTALL/share/config/jobs
+   sudo cp ERT_local_files/config/jobs/* $INSTALL/share/config/jobs
    pushd $INSTALL/share/config/jobs
-   for i in *
-   do
-       sudo sed -i 's_INSTALL_/usr/local_g' $i
-   done
+   if [ "$PWD" == "$INSTALL/share/config/jobs" ]
+   then
+      for i in *
+      do
+          echo $i
+          sudo sed -i 's_INSTALL_/usr/local_g' $i
+      done
+   fi
    popd
 fi
 
